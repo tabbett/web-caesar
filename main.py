@@ -20,11 +20,11 @@ import cgi
 
 form = """
 <form method = "post">
-    <h2> Web Caesar </h2>
     <label>
         <h3>Enter text to rotate</h3>
         <textarea name = 'message' style = "height: 100px"; "width: 400px">
         </textarea>
+    </label>
     <br>
     <label>
         Enter rotation
@@ -35,16 +35,18 @@ form = """
 
 </form>
 """
+header = "<h2> Web Caesar </h2><br>"
+
 class MainHandler(webapp2.RequestHandler):
     def get(self):
-        self.response.write(form)
+        self.response.write(header + form)
 
     def post(self):
         message = self.request.get("message")
         rot = int(self.request.get("rot"))
         encrypted_message = caesar.encrypt(message,rot)
         escaped_message = cgi.escape(encrypted_message)
-        self.response.write("Secret message: " + escaped_message)
+        self.response.write(header + "Secret message: " + escaped_message)
 
 app = webapp2.WSGIApplication([
     ('/', MainHandler)
